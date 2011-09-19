@@ -238,7 +238,6 @@ public class BandcampClientImpl implements BandcampClient {
             params.append(URLEncoder.encode(object.toString(), "UTF-8"));
             params.append(',');
         }
-        params.substring(0, params.length() - 1);
-        return params.toString();
+        return params.substring(0, params.length() - 1);
     }
 }
