@@ -1,1 +1,7 @@
-This file was created by IntelliJ IDEA 10.5.2 for binding GitHub repository
+Java client for the Bandcamp API.
+
+http://bandcamp.com/developer
+
+Uses the Google GSON JSON library.
+
+http://code.google.com/p/google-gson/
