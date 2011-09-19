@@ -5,3 +5,10 @@ http://bandcamp.com/developer
 Uses the Google GSON JSON library.
 
 http://code.google.com/p/google-gson/
+
+To use this class, instantiate a BandcampClientImpl using your Bandcamp API key.
+
+````
+    BandcampClient bandcampClient = new BandcampClientImpl(apiKey);
+````
+

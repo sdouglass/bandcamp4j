@@ -18,12 +18,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Class javadoc comment here...
- *
- * @author sam
- * @version $Id$
- */
 public class BandcampClientImpl implements BandcampClient {
 
     private Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();

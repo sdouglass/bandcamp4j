@@ -1,11 +1,5 @@
 package org.bandcamp4j;
 
-/**
- * Class javadoc comment here...
- *
- * @author sam
- * @version $Id$
- */
 public class BandcampException extends RuntimeException {
 
     public BandcampException() {

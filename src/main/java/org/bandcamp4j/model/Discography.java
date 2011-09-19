@@ -1,14 +1,7 @@
 package org.bandcamp4j.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Class javadoc comment here...
- *
- * @author sam
- * @version $Id$
- */
 public class Discography {
 
     private List<Album> albums;

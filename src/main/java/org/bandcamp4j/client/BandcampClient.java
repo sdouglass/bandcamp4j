@@ -8,12 +8,6 @@ import org.bandcamp4j.model.Track;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Class javadoc comment here...
- *
- * @author sam
- * @version $Id$
- */
 public interface BandcampClient {
 
     List<Band> bandSearch(String... names);

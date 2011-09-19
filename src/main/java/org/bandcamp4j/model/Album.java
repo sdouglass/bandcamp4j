@@ -2,12 +2,6 @@ package org.bandcamp4j.model;
 
 import java.util.List;
 
-/**
- * Class javadoc comment here...
- *
- * @author sam
- * @version $Id$
- */
 public class Album {
 
     private long albumId;
