@@ -10,7 +10,6 @@ import org.bandcamp4j.model.Track;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -20,26 +19,33 @@ import java.util.Map;
 
 public class BandcampClientImpl implements BandcampClient {
 
+    private static final String BAND_SEARCH_URL_PATTERN = "http://api.bandcamp.com/api/band/3/search?key={0}&name={1}";
+    private static final String BAND_DISCOGRAPHY_URL_PATTERN = "http://api.bandcamp.com/api/band/3/discography?key={0}&band_id={1}";
+    private static final String BAND_INFO_URL_PATTERN = "http://api.bandcamp.com/api/band/3/info?key={0}&band_id={1}";
+    private static final String ALBUM_INFO_URL_PATTERN = "http://api.bandcamp.com/api/album/2/info?key={0}&album_id={1}";
+    private static final String TRACK_INFO_URL_PATTERN = "http://api.bandcamp.com/api/track/1/info?key={0}&track_id={1}";
+    private static final String URL_INFO_URL_PATTERN = "http://api.bandcamp.com/api/url/1/info?key={0}&url={1}";
+
     private Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
     private String apiKey;
 
-    private boolean debug;
+    private BandcampClientConnection connection = new BandcampClientConnectionImpl();
 
+    /**
+     * Adapted from http://bandcamp.com/developer
+     *
+     * Every API call must include a key parameter. This developer key is unique to you, and is used to identify you
+     * with the API server. Bandcamp will gladly give you your own, unique, unpronounceable developer key upon request.
+     * Just send an email to developer@bandcamp.com with your full name and contact email, and Bandcamp will
+     * eventually send you a key.
+     */
     public BandcampClientImpl(String apiKey) {
         this.apiKey = apiKey;
     }
 
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public boolean isDebug() {
-        return debug;
-    }
-
-    public void setDebug(boolean debug) {
-        this.debug = debug;
+    public void setConnection(BandcampClientConnection connection) {
+        this.connection = connection;
     }
 
     public List<Band> bandSearch(String... names) {
@@ -47,16 +53,9 @@ public class BandcampClientImpl implements BandcampClient {
             throw new IllegalArgumentException("Please provide at least one band name");
         }
         try {
-            // base url
-            String baseUrl = "http://api.bandcamp.com/api/band/3/search?key={0}&name={1}";
-            // build params
-            String nameParams = toUrlEncodedCommaSeparatedList(names);
-            // substitute in params to get final url
-            String finalUrl = MessageFormat.format(baseUrl, apiKey, nameParams);
-            URL bandSearchUrl = new URL(finalUrl);
-            // make request
-            InputStream inputStream = bandSearchUrl.openStream();
-            Reader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String finalUrl = buildUrl(BAND_SEARCH_URL_PATTERN, apiKey, names);
+
+            Reader reader = connection.getReader(finalUrl);
 
             Type type = new TypeToken<Map<String, List<Band>>>() {}.getType();
 
@@ -73,16 +72,9 @@ public class BandcampClientImpl implements BandcampClient {
             throw new IllegalArgumentException("Please provide at least one band id");
         }
         try {
-            // base url
-            String baseUrl = "http://api.bandcamp.com/api/band/3/discography?key={0}&band_id={1}";
-            // build params
-            String nameParams = BandcampClientImpl.toUrlEncodedCommaSeparatedList(bandIds);
-            // substitute in params to get final url
-            String finalUrl = MessageFormat.format(baseUrl, apiKey, nameParams);
-            URL bandSearchUrl = new URL(finalUrl);
-            // make request
-            InputStream inputStream = bandSearchUrl.openStream();
-            Reader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String finalUrl = buildUrl(BAND_DISCOGRAPHY_URL_PATTERN, apiKey, bandIds);
+
+            Reader reader = connection.getReader(finalUrl);
 
             JsonParser parser = new JsonParser();
 
@@ -141,16 +133,9 @@ public class BandcampClientImpl implements BandcampClient {
             throw new IllegalArgumentException("Please provide at least one band id");
         }
         try {
-            // base url
-            String baseUrl = "http://api.bandcamp.com/api/band/3/info?key={0}&band_id={1}";
-            // build params
-            String nameParams = BandcampClientImpl.toUrlEncodedCommaSeparatedList(bandIds);
-            // substitute in params to get final url
-            String finalUrl = MessageFormat.format(baseUrl, apiKey, nameParams);
-            URL bandSearchUrl = new URL(finalUrl);
-            // make request
-            InputStream inputStream = bandSearchUrl.openStream();
-            Reader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String finalUrl = buildUrl(BAND_INFO_URL_PATTERN, apiKey, bandIds);
+
+            Reader reader = connection.getReader(finalUrl);
 
             JsonParser parser = new JsonParser();
 
@@ -180,14 +165,9 @@ public class BandcampClientImpl implements BandcampClient {
 
     public Album albumInfo(long albumId) {
         try {
-            // base url
-            String baseUrl = "http://api.bandcamp.com/api/album/2/info?key={0}&album_id={1}";
-            // substitute in params to get final url
-            String finalUrl = MessageFormat.format(baseUrl, apiKey, Long.toString(albumId));
-            URL bandSearchUrl = new URL(finalUrl);
-            // make request
-            InputStream inputStream = bandSearchUrl.openStream();
-            Reader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String finalUrl = buildUrl(ALBUM_INFO_URL_PATTERN, apiKey, new Object[]{Long.toString(albumId)});
+
+            Reader reader = connection.getReader(finalUrl);
 
             return gson.fromJson(reader, Album.class);
         } catch (Exception e) {
@@ -197,14 +177,9 @@ public class BandcampClientImpl implements BandcampClient {
 
     public Track trackInfo(long trackId) {
         try {
-            // base url
-            String baseUrl = "http://api.bandcamp.com/api/track/1/info?key={0}&track_id={1}";
-            // substitute in params to get final url
-            String finalUrl = MessageFormat.format(baseUrl, apiKey, Long.toString(trackId));
-            URL bandSearchUrl = new URL(finalUrl);
-            // make request
-            InputStream inputStream = bandSearchUrl.openStream();
-            Reader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String finalUrl = buildUrl(TRACK_INFO_URL_PATTERN, apiKey, new Object[]{Long.toString(trackId)});
+
+            Reader reader = connection.getReader(finalUrl);
 
             return gson.fromJson(reader, Track.class);
         } catch (Exception e) {
@@ -214,14 +189,9 @@ public class BandcampClientImpl implements BandcampClient {
 
     public long urlInfo(String url) {
         try {
-            // base url
-            String baseUrl = "http://api.bandcamp.com/api/url/1/info?key={0}&url={1}";
-            // substitute in params to get final url
-            String finalUrl = MessageFormat.format(baseUrl, apiKey, URLEncoder.encode(url, "UTF-8"));
-            URL bandSearchUrl = new URL(finalUrl);
-            // make request
-            InputStream inputStream = bandSearchUrl.openStream();
-            Reader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String finalUrl = buildUrl(URL_INFO_URL_PATTERN, apiKey, new Object[]{URLEncoder.encode(url, "UTF-8")});
+
+            Reader reader = connection.getReader(finalUrl);
 
             JsonParser parser = new JsonParser();
             JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
@@ -232,12 +202,21 @@ public class BandcampClientImpl implements BandcampClient {
         }
     }
 
-    public static String toUrlEncodedCommaSeparatedList(Object... objects) throws UnsupportedEncodingException {
+    public static String buildUrl(String baseUrl, String apiKey, Object[] arguments) {
+        String nameParams = toUrlEncodedCommaSeparatedList(arguments);
+        return MessageFormat.format(baseUrl, apiKey, nameParams);
+    }
+
+    public static String toUrlEncodedCommaSeparatedList(Object[] objects) {
         StringBuilder params = new StringBuilder();
         for (Object object : objects) {
-            params.append(URLEncoder.encode(object.toString(), "UTF-8"));
-            params.append(',');
+            try {
+                params.append(URLEncoder.encode(object.toString(), "UTF-8"));
+                params.append(',');
+            } catch (UnsupportedEncodingException e) {
+                // this shouldn't happen
+            }
         }
-        return params.substring(0, params.length() - 1);
+        return (params.length() > 0 ? params.substring(0, params.length() - 1) : params.toString());
     }
 }
