@@ -1,9 +1,6 @@
 package org.bandcamp4j.client;
 
-import org.bandcamp4j.model.Album;
-import org.bandcamp4j.model.Band;
-import org.bandcamp4j.model.Discography;
-import org.bandcamp4j.model.Track;
+import org.bandcamp4j.model.*;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +17,6 @@ public interface BandcampClient {
 
     Track trackInfo(long trackId);
 
-    long urlInfo(String url);
+    UrlInfo urlInfo(String url);
 
 }

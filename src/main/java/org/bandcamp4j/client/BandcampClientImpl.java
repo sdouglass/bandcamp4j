@@ -3,10 +3,7 @@ package org.bandcamp4j.client;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import org.bandcamp4j.BandcampException;
-import org.bandcamp4j.model.Album;
-import org.bandcamp4j.model.Band;
-import org.bandcamp4j.model.Discography;
-import org.bandcamp4j.model.Track;
+import org.bandcamp4j.model.*;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -187,16 +184,13 @@ public class BandcampClientImpl implements BandcampClient {
         }
     }
 
-    public long urlInfo(String url) {
+    public UrlInfo urlInfo(String url) {
         try {
             String finalUrl = buildUrl(URL_INFO_URL_PATTERN, apiKey, new Object[]{url});
 
             Reader reader = connection.getReader(finalUrl);
 
-            JsonParser parser = new JsonParser();
-            JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
-
-            return jsonObject.entrySet().iterator().next().getValue().getAsLong();
+            return gson.fromJson(reader, UrlInfo.class);
         } catch (Exception e) {
             throw new BandcampException(e);
         }

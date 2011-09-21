@@ -1,9 +1,6 @@
 package org.bandcamp4j.client;
 
-import org.bandcamp4j.model.Album;
-import org.bandcamp4j.model.Band;
-import org.bandcamp4j.model.Discography;
-import org.bandcamp4j.model.Track;
+import org.bandcamp4j.model.*;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -151,13 +148,27 @@ public class TestBandcampClientImpl {
         assertNotNull(track);
     }
 
-    private static final String URL_INFO_JSON = "{\"band_id\":4214473200}";
+    private static final String BAND_URL_INFO_JSON = "{\"band_id\":4214473200}";
+    private static final String TRACK_URL_INFO_JSON = "{\"band_id\":3288886718,\"track_id\":4394253}";
+
     @Test
     public void testUrlInfo() {
-        connectionImpl.setResponseJson(URL_INFO_JSON);
+        connectionImpl.setResponseJson(BAND_URL_INFO_JSON);
 
-        long id = bandcampClient.urlInfo("cults.bandcamp.com");
+        UrlInfo urlInfo = bandcampClient.urlInfo("cults.bandcamp.com");
 
-        assertEquals(id, 4214473200l);
+        assertNotNull(urlInfo);
+        assertNotNull(urlInfo.getBandId());
+        assertEquals(urlInfo.getBandId().longValue(), 4214473200l);
+
+        connectionImpl.setResponseJson(TRACK_URL_INFO_JSON);
+
+        urlInfo = bandcampClient.urlInfo("http://jonathanmann.bandcamp.com/track/dance-and-dance-again-alone-294");
+
+        assertNotNull(urlInfo);
+        assertNotNull(urlInfo.getBandId());
+        assertEquals(urlInfo.getBandId().longValue(), 3288886718l);
+        assertNotNull(urlInfo.getTrackId());
+        assertEquals(urlInfo.getTrackId().longValue(), 4394253l);
     }
 }
