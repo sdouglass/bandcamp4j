@@ -11,3 +11,21 @@ To use this class, instantiate a BandcampClientImpl using your Bandcamp API key.
     BandcampClient bandcampClient = new BandcampClientImpl(apiKey);
 
 
+To add this project as a dependeny using Maven, add the following XML snippets to your pom.xml file:
+
+...
+  <dependencies>
+    <dependency>
+      <groupId>org.bandcamp4j</groupId>
+      <artifactId>bandcamp4j</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+...
+  <repositories>
+    <repository>
+      <id>jsr303js-snapshots</id>
+      <url>http://jsr303js.kenai.com/maven/snapshots/</url>
+    </repository>
+  </repositories>
+...
