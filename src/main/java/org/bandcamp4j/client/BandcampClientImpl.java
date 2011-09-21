@@ -189,7 +189,7 @@ public class BandcampClientImpl implements BandcampClient {
 
     public long urlInfo(String url) {
         try {
-            String finalUrl = buildUrl(URL_INFO_URL_PATTERN, apiKey, new Object[]{URLEncoder.encode(url, "UTF-8")});
+            String finalUrl = buildUrl(URL_INFO_URL_PATTERN, apiKey, new Object[]{url});
 
             Reader reader = connection.getReader(finalUrl);
 
