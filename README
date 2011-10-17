@@ -24,8 +24,8 @@ To add this project as a dependeny using Maven, add the following XML snippets t
 ...
   <repositories>
     <repository>
-      <id>jsr303js-snapshots</id>
-      <url>http://jsr303js.kenai.com/maven/snapshots/</url>
+        <id>sdouglass-snapshots</id>
+        <url>https://raw.github.com/sdouglass/sdouglass-maven-repo/master/snapshots</url>
     </repository>
   </repositories>
 ...
