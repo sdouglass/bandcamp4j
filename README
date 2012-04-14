@@ -11,7 +11,7 @@ To use this class, instantiate a BandcampClientImpl using your Bandcamp API key.
     BandcampClient bandcampClient = new BandcampClientImpl(apiKey);
 
 
-To add this project as a dependeny using Maven, add the following XML snippets to your pom.xml file:
+To add this project as a dependency using Maven, add the following XML snippets to your pom.xml file:
 
 ...
   <dependencies>
