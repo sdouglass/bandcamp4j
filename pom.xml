@@ -4,7 +4,7 @@
 
     <groupId>org.bandcamp4j</groupId>
     <artifactId>bandcamp4j</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <packaging>jar</packaging>
 
     <name>bandcamp4j</name>
