@@ -13,19 +13,22 @@ To use this class, instantiate a BandcampClientImpl using your Bandcamp API key.
 
 To add this project as a dependency using Maven, add the following XML snippets to your pom.xml file:
 
-...
-  <dependencies>
-    <dependency>
-      <groupId>org.bandcamp4j</groupId>
-      <artifactId>bandcamp4j</artifactId>
-      <version>0.1-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
-...
-  <repositories>
-    <repository>
-        <id>sdouglass-snapshots</id>
-        <url>https://raw.github.com/sdouglass/sdouglass-maven-repo/master/snapshots</url>
-    </repository>
-  </repositories>
-...
+    <dependencies>
+    ....
+        <dependency>
+            <groupId>org.bandcamp4j</groupId>
+            <artifactId>bandcamp4j</artifactId>
+            <version>0.1</version>
+        </dependency>
+    ....
+    </dependencies>
+    ....
+    <repositories>
+    ....
+        <repository>
+            <id>sdouglass-releases</id>
+            <url>https://raw.github.com/sdouglass/sdouglass-maven-repo/master/releases</url>
+        </repository>
+    ....
+    </repositories>
+    ...
