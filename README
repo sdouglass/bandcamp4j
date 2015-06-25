@@ -18,7 +18,7 @@ To add this project as a dependency using Maven, add the following XML snippets 
         <dependency>
             <groupId>org.bandcamp4j</groupId>
             <artifactId>bandcamp4j</artifactId>
-            <version>0.1</version>
+            <version>0.2</version>
         </dependency>
     ....
     </dependencies>
