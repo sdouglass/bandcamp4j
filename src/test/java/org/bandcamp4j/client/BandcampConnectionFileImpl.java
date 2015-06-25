@@ -10,21 +10,17 @@ import java.io.*;
  */
 public class BandcampConnectionFileImpl implements BandcampClientConnection {
 
-    Reader reader;
+    String responseJson;
 
     public BandcampConnectionFileImpl() {
 
     }
 
     public void setResponseJson(String responseJson) {
-        reader = new StringReader(responseJson);
+        this.responseJson = responseJson;
     }
 
-    public void setResponseJson(InputStream responseJson) {
-        reader = new InputStreamReader(responseJson);
-    }
-
-    public Reader getReader(String url) throws IOException {
-        return reader;
+    public String getJson(String url) throws IOException {
+        return responseJson;
     }
 }

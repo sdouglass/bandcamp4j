@@ -52,11 +52,11 @@ public class BandcampClientImpl implements BandcampClient {
         try {
             String finalUrl = buildUrl(BAND_SEARCH_URL_PATTERN, apiKey, names);
 
-            Reader reader = connection.getReader(finalUrl);
+            String json = connection.getJson(finalUrl);
 
             Type type = new TypeToken<Map<String, List<Band>>>() {}.getType();
 
-            Map<String, List<Band>> result = gson.fromJson(reader, type);
+            Map<String, List<Band>> result = gson.fromJson(json, type);
 
             return result.get("results");
         } catch (Exception e) {
@@ -71,11 +71,11 @@ public class BandcampClientImpl implements BandcampClient {
         try {
             String finalUrl = buildUrl(BAND_DISCOGRAPHY_URL_PATTERN, apiKey, bandIds);
 
-            Reader reader = connection.getReader(finalUrl);
+            String json = connection.getJson(finalUrl);
 
             JsonParser parser = new JsonParser();
 
-            JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+            JsonObject jsonObject = parser.parse(json).getAsJsonObject();
 
             Map<Long, Discography> results = new LinkedHashMap<Long, Discography>();
 
@@ -132,11 +132,11 @@ public class BandcampClientImpl implements BandcampClient {
         try {
             String finalUrl = buildUrl(BAND_INFO_URL_PATTERN, apiKey, bandIds);
 
-            Reader reader = connection.getReader(finalUrl);
+            String json = connection.getJson(finalUrl);
 
             JsonParser parser = new JsonParser();
 
-            JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+            JsonObject jsonObject = parser.parse(json).getAsJsonObject();
 
             Map<Long, Band> results = new LinkedHashMap<Long, Band>();
 
@@ -164,9 +164,9 @@ public class BandcampClientImpl implements BandcampClient {
         try {
             String finalUrl = buildUrl(ALBUM_INFO_URL_PATTERN, apiKey, new Object[]{Long.toString(albumId)});
 
-            Reader reader = connection.getReader(finalUrl);
+            String json = connection.getJson(finalUrl);
 
-            return gson.fromJson(reader, Album.class);
+            return gson.fromJson(json, Album.class);
         } catch (Exception e) {
             throw new BandcampException(e);
         }
@@ -176,9 +176,9 @@ public class BandcampClientImpl implements BandcampClient {
         try {
             String finalUrl = buildUrl(TRACK_INFO_URL_PATTERN, apiKey, new Object[]{Long.toString(trackId)});
 
-            Reader reader = connection.getReader(finalUrl);
+            String json = connection.getJson(finalUrl);
 
-            return gson.fromJson(reader, Track.class);
+            return gson.fromJson(json, Track.class);
         } catch (Exception e) {
             throw new BandcampException(e);
         }
@@ -188,9 +188,9 @@ public class BandcampClientImpl implements BandcampClient {
         try {
             String finalUrl = buildUrl(URL_INFO_URL_PATTERN, apiKey, new Object[]{url});
 
-            Reader reader = connection.getReader(finalUrl);
+            String json = connection.getJson(finalUrl);
 
-            return gson.fromJson(reader, UrlInfo.class);
+            return gson.fromJson(json, UrlInfo.class);
         } catch (Exception e) {
             throw new BandcampException(e);
         }

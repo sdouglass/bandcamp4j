@@ -12,4 +12,24 @@ public class BandcampClientConnectionImpl implements BandcampClientConnection {
         InputStream inputStream = bandSearchUrl.openStream();
         return new BufferedReader(new InputStreamReader(inputStream));
     }
+
+    public String getJson(String url) throws IOException {
+        URL urlObject = new URL(url);
+
+        InputStream inputStream = urlObject.openStream();
+        Reader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringWriter writer = new StringWriter();
+
+        char[] buffer = new char[128];
+        int charsRead;
+        try {
+            while ((charsRead = reader.read(buffer)) != -1) {
+                writer.write(buffer, 0, charsRead);
+            }
+        } finally {
+            reader.close();
+        }
+
+        return writer.toString();
+    }
 }

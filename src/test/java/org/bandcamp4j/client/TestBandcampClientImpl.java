@@ -1,5 +1,6 @@
 package org.bandcamp4j.client;
 
+import org.apache.commons.io.IOUtils;
 import org.bandcamp4j.model.*;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class TestBandcampClientImpl {
         "\"url\":\"http:\\/\\/jonathanmann.bandcamp.com\",\"offsite_url\":\"http:\\/\\/www.rockcookiebottom.com\"}]}";
 
     @Test
-    public void testBandSearch() {
+    public void testBandSearch() throws IOException {
 
         try {
             bandcampClient.bandSearch();
@@ -48,7 +49,8 @@ public class TestBandcampClientImpl {
         assertEquals(1, results.size());
 
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("band_search_multiple.json");
-        connectionImpl.setResponseJson(stream);
+
+        connectionImpl.setResponseJson(IOUtils.toString(stream));
 
         results = bandcampClient.bandSearch("jonathan mann", "cults");
 
@@ -66,7 +68,7 @@ public class TestBandcampClientImpl {
         }
 
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("band_discography_single.json");
-        connectionImpl.setResponseJson(stream);
+        connectionImpl.setResponseJson(IOUtils.toString(stream));
 
         Map<Long, Discography> results = bandcampClient.bandDiscography(3288886718l);
 
@@ -78,7 +80,7 @@ public class TestBandcampClientImpl {
         assertEquals(19, discography.getAlbums().size());
 
         stream = this.getClass().getClassLoader().getResourceAsStream("band_discography_multiple.json");
-        connectionImpl.setResponseJson(stream);
+        connectionImpl.setResponseJson(IOUtils.toString(stream));
 
         results = bandcampClient.bandDiscography(3288886718l, 3463798201l, 203035041l);
 
@@ -90,7 +92,7 @@ public class TestBandcampClientImpl {
         "\"url\":\"http:\\/\\/jonathanmann.bandcamp.com\",\"offsite_url\":\"http:\\/\\/www.rockcookiebottom.com\"}";
 
     @Test
-    public void testBandInfo() {
+    public void testBandInfo() throws IOException {
 
         try {
             bandcampClient.bandInfo();
@@ -108,7 +110,7 @@ public class TestBandcampClientImpl {
         assertTrue("Jonathan Mann".equals(band.getName()));
 
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("band_info_multiple.json");
-        connectionImpl.setResponseJson(stream);
+        connectionImpl.setResponseJson(IOUtils.toString(stream));
 
         results = bandcampClient.bandInfo(3463798201l, 203035041l);
 
@@ -126,9 +128,9 @@ public class TestBandcampClientImpl {
     }
 
     @Test
-    public void testAlbumInfo() {
+    public void testAlbumInfo() throws IOException {
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("album_info.json");
-        connectionImpl.setResponseJson(stream);
+        connectionImpl.setResponseJson(IOUtils.toString(stream));
 
         Album album = bandcampClient.albumInfo(88812510l);
 
@@ -139,9 +141,9 @@ public class TestBandcampClientImpl {
     }
 
     @Test
-    public void testTrackInfo() {
+    public void testTrackInfo() throws IOException {
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream("track_info.json");
-        connectionImpl.setResponseJson(stream);
+        connectionImpl.setResponseJson(IOUtils.toString(stream));
 
         Track track = bandcampClient.trackInfo(3748878242l);
 

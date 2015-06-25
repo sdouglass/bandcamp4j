@@ -1,11 +1,5 @@
 package org.bandcamp4j.model;
 
-/**
- * Class javadoc comment here...
- *
- * @author sam
- * @version $Id$
- */
 public class UrlInfo {
 
   private Long bandId;
